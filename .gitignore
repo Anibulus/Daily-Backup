@@ -1,0 +1,6 @@
+[Bi]in/
+[Oo]bj/
+[Dd]ebug/
+.vs/
+.vscode/
+*.dll
