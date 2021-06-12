@@ -1,6 +1,6 @@
 using System;
 
-namespace Consola
+namespace Consola.Modelo
 {
     public class Archivo
     {

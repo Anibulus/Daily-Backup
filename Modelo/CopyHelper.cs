@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using static System.Console;
 
-namespace Consola
+namespace Consola.Modelo
 {
     public class CopyHelper
     {
@@ -15,6 +15,7 @@ namespace Consola
         public CopyHelper(string destino)
         {
             this.destino=destino;
+            archivos=new List<Archivo>();
         }
 
         public void Respaldar()

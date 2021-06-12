@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Timers;
 using static System.Console;
+
+using Consola.Modelo;
 
 namespace Consola
 {
@@ -10,32 +12,55 @@ namespace Consola
         {
             WriteLine("Bienvenido a Daily BackUp");
             WriteLine("Ingrese la dirección en la que se alojaran los respaldos");
-            string ruta=@ReadLine()+"\\";
-            CopyHelper ch=new CopyHelper(ruta);
-            ch.archivos=new List<Archivo>();
-
-            int opc=0;
-            WriteLine("Favor de ingresar la ruta, nombre y extension del archivo en ese orden");
-            while(opc!=2)
+            string ruta=ReaderHelper.ValidarRuta(@ReadLine());
+            if(ruta!="")
             {
+                CopyHelper ch=new CopyHelper(ruta);
+                bool opc=true;
                 
-                WriteLine("Ruta");
-                ruta=ReadLine()+"\\";
-                WriteLine("Nombre del archivo");
-                string nombre=ReadLine();
-                WriteLine("Extension");
-                string extension=ReadLine();
-                
-                ch.archivos.Add(new Archivo(nombre, extension, ruta));
-                WriteLine("Se ha agregado el archivo a la lista");
+                do
+                {
+                    WriteLine("Favor de ingresar la ruta, nombre incluyendo su extensión del archivo en ese orden.");    
+                    WriteLine("Ruta");
+                    ruta=ReaderHelper.ValidarRuta(@ReadLine());
+                    if(ruta!="")
+                    {
+                        WriteLine("Nombre del archivo");
+                        string nombre=ReaderHelper.ValidarNombreDeArchivo(ReadLine());
+                        if(nombre!="")
+                        {
+                            string[] file=nombre.Split(".");
+                            ch.archivos.Add(new Archivo(file[0], "."+file[1], ruta));
+                            WriteLine("Se ha agregado el archivo a la lista");
+                        }
+                    }
+                    
+                    WriteLine(@"¿Desea agregar otro archivo o carpeta? (S\N)");
+                    opc=(ReadLine().Equals("s"));
+                }while(opc);//Fin de ciclo para listado de archivos
 
-                opc++;
+                WriteLine("¿Cada cuánto tiempo desea que se realice? (Nm Ns Nd)");
+                string plazo=ReaderHelper.ValidarTiempoDeRespaldo(ReadLine());
+
+
+                WriteLine("Se procedera a realizar el respaldo");
+                ch.Respaldar();
+            }
+            else
+            {
+                WriteLine("No se ha determinado ruta.");
             }
 
-            WriteLine("Se procedera a realizar el respaldo");
-            ch.Respaldar();
+        }//Fin de main
 
+        private void Plazo(string plazo)
+        {
+            Timer t=new Timer{
+                Interval=2000
+            };
+            t.Enabled=true;
+            //t.Tick+= new System.EventHandler(OnEven);
         }
-    }
+    }//Fin de la clase
 
 }//Fin de namespace
