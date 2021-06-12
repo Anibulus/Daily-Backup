@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Timers;
 using static System.Console;
 
 namespace Consola.Modelo
@@ -10,7 +11,7 @@ namespace Consola.Modelo
         public List<Archivo> archivos{get;set;} 
         public int respaldosRealizados{get;set;}=0;
         public int limiteDeRespaldos{get;set;}=5;
-        public string destino{get;set;}=@"C:\Users\anibu\Desktop\Proyectos\Platzi\Consola\bin\Program.cs";
+        public string destino{get;set;}=@"";
 
         public CopyHelper(string destino)
         {
@@ -22,6 +23,7 @@ namespace Consola.Modelo
         {
             if(archivos!=null || archivos.Count>0)
             {
+                CrearDirectorioSiNoExiste();
                 int tasaDeExito=archivos.Count;
                 foreach(Archivo archivo in archivos)
                 {
@@ -37,6 +39,7 @@ namespace Consola.Modelo
                         Console.WriteLine(iox.Message);  
                     }
                 }
+                Write(archivos);
                 WriteLine($"Se han respaldado {tasaDeExito} de {archivos.Count}. Tasa de éxito del {tasaDeExito*100/archivos.Count}%");
                 this.respaldosRealizados++;
             }
@@ -44,10 +47,22 @@ namespace Consola.Modelo
                 WriteLine("El listado de archivos a respaldar debe contener al menos un archivo.");
         }//Fin de respaldar
 
-        public bool DirectorioOArchivoExiste(string ruta)
+        public void CrearDirectorioSiNoExiste()
         {
-            //File.Exists
-            return Directory.Exists(ruta);
+            if(!Directory.Exists(this.destino))
+            {
+                WriteLine("Se ha creado la carpeta destino");
+                Directory.CreateDirectory(this.destino);
+            }
+        }
+               
+        public void Plazo(string plazo)
+        {
+            Timer t=new Timer{
+                Interval=2000
+            };
+            t.Enabled=true;
+            //t.Tick+= new System.EventHandler(OnEven);
         }
 
         public void LimiteParaRespaldar()

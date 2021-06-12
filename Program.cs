@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Timers;
 using static System.Console;
-
 using Consola.Modelo;
 
 namespace Consola
@@ -15,7 +13,7 @@ namespace Consola
             string ruta=ReaderHelper.ValidarRuta(@ReadLine());
             if(ruta!="")
             {
-                CopyHelper ch=new CopyHelper(ruta);
+                CopyHelper ch=new CopyHelper(ruta);                
                 bool opc=true;
                 
                 do
@@ -53,14 +51,6 @@ namespace Consola
 
         }//Fin de main
 
-        private void Plazo(string plazo)
-        {
-            Timer t=new Timer{
-                Interval=2000
-            };
-            t.Enabled=true;
-            //t.Tick+= new System.EventHandler(OnEven);
-        }
     }//Fin de la clase
 
 }//Fin de namespace
