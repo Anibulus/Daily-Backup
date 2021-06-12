@@ -31,7 +31,11 @@ namespace Consola.Modelo
                     string destino=this.destino+archivo.nombre+archivo.extension;
                     try
                     {
-                        File.Copy(actual,destino,true);
+                        if(archivo.extension!="")
+                            File.Copy(actual,destino,true);
+                        else
+                            DirectoryCopy(actual, destino);
+                        
                     }
                     catch (IOException iox)  
                     {  
@@ -39,7 +43,6 @@ namespace Consola.Modelo
                         Console.WriteLine(iox.Message);  
                     }
                 }
-                Write(archivos);
                 WriteLine($"Se han respaldado {tasaDeExito} de {archivos.Count}. Tasa de éxito del {tasaDeExito*100/archivos.Count}%");
                 this.respaldosRealizados++;
             }
@@ -75,5 +78,28 @@ namespace Consola.Modelo
             }
         }
         
+        private static void DirectoryCopy(string actual, string destino)
+        {
+            // Obtiene las subcarpetas de la carpeta elegida
+            DirectoryInfo dir = new DirectoryInfo(actual);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string tempPath = Path.Combine(destino, file.Name);
+                file.CopyTo(tempPath, false);
+            }
+
+            //Copia los subdirectorios
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string tempPath = Path.Combine(destino, subdir.Name);
+                DirectoryCopy(subdir.FullName, tempPath);
+            }
+            
+        }//Fin de copy Directory
+
     }//Fin de clase
 }//Fin de namespace

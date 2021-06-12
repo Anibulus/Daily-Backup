@@ -16,7 +16,7 @@ namespace Consola.Modelo
         }
         public static string ValidarNombreDeArchivo(string nombre)
         {
-            return Regex.IsMatch(nombre.Trim(),@"[\w_\-]+.[A-z]{2,5}")?nombre:"";            
+            return Regex.IsMatch(nombre.Trim(),@"[\w_\-]+(.[A-z]{2,5}|\\)")?nombre:"";            
         } 
 
         public static string ValidarTiempoDeRespaldo(string plazo)

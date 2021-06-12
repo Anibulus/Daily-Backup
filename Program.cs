@@ -18,7 +18,7 @@ namespace Consola
                 
                 do
                 {
-                    WriteLine("Favor de ingresar la ruta, nombre incluyendo su extensión del archivo en ese orden.");    
+                    WriteLine("Favor de ingresar la ruta, nombre incluyendo su extensión del archivo en ese orden o especificar carpeta terminanco con \"\\\".");    
                     WriteLine("Ruta");
                     ruta=ReaderHelper.ValidarRuta(@ReadLine());
                     if(ruta!="")
@@ -28,7 +28,7 @@ namespace Consola
                         if(nombre!="")
                         {
                             string[] file=nombre.Split(".");
-                            ch.archivos.Add(new Archivo(file[0], "."+file[1], ruta));
+                            ch.archivos.Add(new Archivo(file[0], file.Length>1?"."+file[1]:"", ruta));
                             WriteLine("Se ha agregado el archivo a la lista");
                         }
                     }
