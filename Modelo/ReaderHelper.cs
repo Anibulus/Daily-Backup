@@ -11,12 +11,12 @@ namespace Consola.Modelo
         public static string ValidarRuta(string path)
         {            
             path=(!path.EndsWith(@"\"))?path+@"\":path;
+            
             return Regex.IsMatch(path.Trim(),@"[A-z]:(\\[A-z_\-. 0-9]+)+\\")?path:"";
         }
-
         public static string ValidarNombreDeArchivo(string nombre)
         {
-            return Regex.IsMatch(nombre.Trim(),@"[\w_\-]+.[A-z]{2,5}")?nombre:"";            
+            return Regex.IsMatch(nombre.Trim(),@"[\w_\-]+(.[A-z]{2,5}|\\)")?nombre:"";            
         } 
 
         public static string ValidarTiempoDeRespaldo(string plazo)
