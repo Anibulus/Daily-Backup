@@ -9,32 +9,54 @@ namespace Consola
         static void Main(string[] args)
         {
             WriteLine("Bienvenido a Daily BackUp");
-            WriteLine("Ingrese la dirección en la que se alojaran los respaldos");
-            string ruta=ReaderHelper.ValidarRuta(@ReadLine());
-            if(ruta!="")
-            {
-                CopyHelper ch=new CopyHelper(ruta);                
-                bool opc=true;
-                
-                do
-                {                    
-                    WriteLine(@"¿Desea agregar otro archivo o carpeta? (S\N)");
-                    opc=(ReadLine().Equals("s",StringComparison.OrdinalIgnoreCase));
-                }while(opc);//Fin de ciclo para listado de archivos
-
-                WriteLine("¿Cada cuánto tiempo desea que se realice? (Nm Ns Nd)");
-                string plazo=ReaderHelper.ValidarTiempoDeRespaldo(ReadLine());
-
-
-                WriteLine("Se procedera a realizar el respaldo");
-                ch.Respaldar();
-            }
-            else
-            {
-                WriteLine("No se ha determinado ruta.");
-            }
-
+            InputGetRutaRespaldo();
         }//Fin de main
+
+        ///<SUMARY>
+        ///Crea el objeto que será llamado en el resto de métodos
+        private static void InputGetRutaRespaldo()
+        {
+            string ruta;
+            do{
+                WriteLine("Ingrese la dirección en la que se alojaran los respaldos");
+                ruta=ReaderHelper.ValidarRuta(@ReadLine());
+                if(ruta!="")
+                {
+                    CopyHelper ch=new CopyHelper(ruta);                
+                    
+                    InputAgregarOtroDirectorio(ch, ruta);
+
+                    WriteLine("¿Cada cuánto tiempo desea que se realice? (Nm Ns Nd)");
+                    string plazo=ReaderHelper.ValidarTiempoDeRespaldo(ReadLine());
+
+
+                    WriteLine("Se procedera a realizar el respaldo");
+
+                    //TODO poner un timer que el usuario puede elegir
+
+                    ch.Respaldar();
+                }
+                else
+                {
+                    WriteLine("No se ha determinado ruta.");
+                }
+            }while(ruta.Equals(""));
+        }//Fin de método que otorga la ruta de respaldo
+
+        ///<SUMMARY>
+        ///Bucle que agrega directoros y archivos
+        private static void InputAgregarOtroDirectorio(CopyHelper ch, string ruta)
+        {
+            bool opc=true;
+                    
+            do
+            {                   
+                InputGetRuta(ch, ruta); 
+
+                WriteLine(@"¿Desea agregar otro archivo o carpeta? (S\N)");
+                opc=(ReadLine().Equals("s",StringComparison.OrdinalIgnoreCase));
+            }while(opc);//Fin de ciclo para listado de archivos
+        }
 
         ///<SUMMARY>
         ///Primero busca la ruta con un formato valido
@@ -44,13 +66,17 @@ namespace Consola
             do
             {
                 WriteLine("Favor de ingresar la ruta, nombre incluyendo su extensión del archivo en ese orden o especificar carpeta terminanco con \"\\\".");    
-                WriteLine("Ruta");
+                WriteLine("Ruta:");
                 ruta=ReaderHelper.ValidarRuta(@ReadLine());
                 if(ruta!="")
                 {
                     InputGetNombreArchivo(ch, ruta);
                 }
-            }while(ruta=="");
+                else
+                {
+                    WriteLine("El texto ingresado no coincide con una ruta.");
+                }
+            }while(ruta.Equals(""));
         }//fin de método ruta
 
         ///<SUMMARY>
@@ -73,7 +99,7 @@ namespace Consola
                 {
                     WriteLine("El texto ingresado no tiene el formato de una ruta.");
                 }
-            }while(nombre=="");
+            }while(nombre.Equals(""));
         }//Fin de método de nombre de archivo
 
     }//Fin de la clase
