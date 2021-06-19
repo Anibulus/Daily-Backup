@@ -24,7 +24,7 @@ namespace Consola
                 {
                     CopyHelper ch=new CopyHelper(ruta);                
                     
-                    InputAgregarOtroDirectorio(ch, ruta);
+                    InputAgregarOtroDirectorio(ch);
 
                     WriteLine("¿Cada cuánto tiempo desea que se realice? (Nm Ns Nd)");
                     string plazo=ReaderHelper.ValidarTiempoDeRespaldo(ReadLine());
@@ -45,13 +45,13 @@ namespace Consola
 
         ///<SUMMARY>
         ///Bucle que agrega directoros y archivos
-        private static void InputAgregarOtroDirectorio(CopyHelper ch, string ruta)
+        private static void InputAgregarOtroDirectorio(CopyHelper ch)
         {
             bool opc=true;
                     
             do
             {                   
-                InputGetRuta(ch, ruta); 
+                InputGetRuta(ch); 
 
                 WriteLine(@"¿Desea agregar otro archivo o carpeta? (S\N)");
                 opc=(ReadLine().Equals("s",StringComparison.OrdinalIgnoreCase));
@@ -61,11 +61,12 @@ namespace Consola
         ///<SUMMARY>
         ///Primero busca la ruta con un formato valido
         ///para después invocar  el método que pide el nombre del archivo
-        private static void InputGetRuta(CopyHelper ch, string ruta)
+        private static void InputGetRuta(CopyHelper ch)
         {
+            string ruta;
             do
             {
-                WriteLine("Favor de ingresar la ruta, nombre incluyendo su extensión del archivo en ese orden o especificar carpeta terminanco con \"\\\".");    
+                WriteLine("Favor de ingresar la ruta, nombre incluyendo su extensión del archivo en ese orden o especificar carpeta terminando con \"\\\".");    
                 WriteLine("Ruta:");
                 ruta=ReaderHelper.ValidarRuta(@ReadLine());
                 if(ruta!="")
