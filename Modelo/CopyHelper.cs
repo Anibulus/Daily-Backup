@@ -10,15 +10,6 @@ namespace Consola.Modelo
     {
         public List<Archivo> archivos { get; set; }
         private Timer t1;
-        public CopyHelper(int respaldosRealizados, int limiteDeRespaldos, string destino)
-        {
-            this.respaldosRealizados = respaldosRealizados;
-            this.limiteDeRespaldos = limiteDeRespaldos;
-            this.destino = destino;
-
-        }
-        public int respaldosRealizados { get; set; } = 0;
-        public int limiteDeRespaldos { get; set; } = 5;
         public string destino { get; set; } = @"";
 
         public CopyHelper(string destino)
@@ -59,8 +50,7 @@ namespace Consola.Modelo
                         Console.WriteLine(iox.Message);
                     }
                 }
-                WriteLine($"Se han respaldado {tasaDeExito} de {archivos.Count}. Tasa de éxito del {tasaDeExito * 100 / archivos.Count}%");
-                //this.respaldosRealizados++;
+                WriteLine($"Se han respaldado {tasaDeExito} de {archivos.Count}. Tasa de éxito del {tasaDeExito * 100 / archivos.Count}% \n El día "+DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"));
             }
             else
                 WriteLine("El listado de archivos a respaldar debe contener al menos un archivo.");
