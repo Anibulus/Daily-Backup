@@ -9,6 +9,7 @@ namespace Consola.Modelo
     public class CopyHelper
     {
         public List<Archivo> archivos { get; set; }
+        private Timer t1;
         public CopyHelper(int respaldosRealizados, int limiteDeRespaldos, string destino)
         {
             this.respaldosRealizados = respaldosRealizados;
@@ -24,6 +25,15 @@ namespace Consola.Modelo
         {
             this.destino = destino;
             archivos = new List<Archivo>();
+        }
+
+        public void CrearDirectorioSiNoExiste()
+        {
+            if (!Directory.Exists(this.destino))
+            {
+                WriteLine("Se ha creado la carpeta destino");
+                Directory.CreateDirectory(this.destino);
+            }
         }
 
         public void Respaldar()
@@ -50,40 +60,11 @@ namespace Consola.Modelo
                     }
                 }
                 WriteLine($"Se han respaldado {tasaDeExito} de {archivos.Count}. Tasa de éxito del {tasaDeExito * 100 / archivos.Count}%");
-                this.respaldosRealizados++;
+                //this.respaldosRealizados++;
             }
             else
                 WriteLine("El listado de archivos a respaldar debe contener al menos un archivo.");
         }//Fin de respaldar
-
-        public void CrearDirectorioSiNoExiste()
-        {
-            if (!Directory.Exists(this.destino))
-            {
-                WriteLine("Se ha creado la carpeta destino");
-                Directory.CreateDirectory(this.destino);
-            }
-        }
-
-        public void Plazo(string plazo)
-        {
-            Timer t = new Timer
-            {
-                Interval = 2000
-            };
-            t.Enabled = true;
-            //t.Tick+= new System.EventHandler(OnEven);
-        }
-
-        public void LimiteParaRespaldar()
-        {
-            if (this.respaldosRealizados >= this.limiteDeRespaldos)
-            {
-                this.respaldosRealizados--;
-                //TODO eliminar respaldos
-                Directory.Delete(this.destino);
-            }
-        }
 
         private static void DirectoryCopy(string actual, string destino)
         {
@@ -111,6 +92,29 @@ namespace Consola.Modelo
             }
 
         }//Fin de copy Directory
+
+        public void Plazo(string plazo)
+        {
+            int dias=int.Parse(plazo);
+            if(dias<=25)
+            {
+                var totalMilisegundos=TimeSpan.FromDays(dias).TotalMilliseconds;
+                t1 = new Timer();
+                t1.Elapsed += (sender,e)=>
+                {
+                    Respaldar();
+                };
+                t1.Interval=totalMilisegundos;
+                t1.Start();
+
+                WriteLine("Presione cualquier tecla para finalizar.");
+                ReadLine();
+
+                t1.Dispose();
+            }
+            else
+                WriteLine("No es posible colocar más de 25 días.");          
+        }
 
     }//Fin de clase
 }//Fin de namespace
