@@ -25,16 +25,18 @@ namespace Consola
                     CopyHelper ch=new CopyHelper(ruta);                
                     
                     InputAgregarOtroDirectorio(ch);
+                    
+                    string plazo="";
 
-                    WriteLine("¿Cada cuánto tiempo desea que se realice? (Nm Ns Nd)");
-                    string plazo=ReaderHelper.ValidarTiempoDeRespaldo(ReadLine());
-
-
-                    WriteLine("Se procedera a realizar el respaldo");
-
-                    //TODO poner un timer que el usuario puede elegir
-
+                    do{
+                        WriteLine("¿Cada cuánto tiempo desea que se realice? (<N>días)");
+                        plazo=ReaderHelper.ValidarTiempoDeRespaldo(ReadLine());
+                    }while(plazo.Equals(""));
+                    
+                    WriteLine("Se procedera a realizar el respaldo.");
+                    //Primero lo hace ene el momento y despues espera a que suceda el tick del timing
                     ch.Respaldar();
+                    ch.Plazo(plazo);
                 }
                 else
                 {

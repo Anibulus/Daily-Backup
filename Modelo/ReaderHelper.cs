@@ -21,7 +21,7 @@ namespace Consola.Modelo
 
         public static string ValidarTiempoDeRespaldo(string plazo)
         {
-            return Regex.IsMatch(plazo.Trim(),@"([0-9]+[Mm])? ?([0-9]+[Ss])? ?([0-9]+[Dd])?")?plazo:"";
+            return Regex.IsMatch(plazo.Trim(),@"\d{1,2}")?plazo:"";
         }
     }//Fin de la clase
 }
